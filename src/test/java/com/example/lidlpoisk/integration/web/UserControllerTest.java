@@ -1,4 +1,4 @@
-package com.example.lidlpoisk.web;
+package com.example.lidlpoisk.integration.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;

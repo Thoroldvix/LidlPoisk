@@ -6,13 +6,17 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "movie")
 @Data
+@ToString(exclude = {"actors", "reviews"})
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -46,8 +50,19 @@ public class Movie {
     @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
+    @ManyToMany()
+    @JoinTable(name = "actor_movie",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    private Set<Actor> actors = new HashSet<>();
+
+
     public void addReview(Review review) {
         review.setMovie(this);
         reviews.add(review);
+    }
+    public void addActor(Actor actor) {
+        actor.getMovies().add(this);
+        actors.add(actor);
     }
 }

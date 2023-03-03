@@ -1,10 +1,12 @@
 package com.example.lidlpoisk.service.impl;
 
 import com.example.lidlpoisk.handler.NotFoundException;
-import com.example.lidlpoisk.model.dto.MovieReadDto;
-import com.example.lidlpoisk.model.dto.ReviewCreateDto;
+import com.example.lidlpoisk.model.dto.movie.MovieCreateEditDto;
+import com.example.lidlpoisk.model.dto.movie.MovieReadDto;
+import com.example.lidlpoisk.model.entities.Director;
 import com.example.lidlpoisk.model.entities.Movie;
-import com.example.lidlpoisk.model.entities.Review;
+import com.example.lidlpoisk.repository.ActorRepository;
+import com.example.lidlpoisk.repository.DirectorRepository;
 import com.example.lidlpoisk.repository.MovieRepository;
 import com.example.lidlpoisk.repository.ReviewRepository;
 import com.example.lidlpoisk.service.MovieService;
@@ -23,12 +25,16 @@ public class MovieServiceImpl implements MovieService {
     private final MovieRepository movieRepository;
     private final ReviewRepository reviewRepository;
     private final ModelMapper modelMapper;
+    private final ActorRepository actorRepository;
+    private final DirectorRepository directorRepository;
 
     @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository, ReviewRepository reviewRepository, ModelMapper modelMapper) {
+    public MovieServiceImpl(MovieRepository movieRepository, ReviewRepository reviewRepository, ModelMapper modelMapper, ActorRepository actorRepository, DirectorRepository directorRepository) {
         this.movieRepository = movieRepository;
         this.reviewRepository = reviewRepository;
         this.modelMapper = modelMapper;
+        this.actorRepository = actorRepository;
+        this.directorRepository = directorRepository;
     }
 
     @Override
@@ -41,29 +47,28 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void delete(Integer id) {
         Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Movie not found"));
+                .orElseThrow(() -> new NotFoundException("Movie with id: " + id +  " doesn't exist"));
         movieRepository.delete(movie);
     }
 
     @Override
-    public Optional<MovieReadDto> findById(Integer id) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isPresent()) {
-            return Optional.of(modelMapper.map(movie.get(), MovieReadDto.class));
-        }
-        throw new NotFoundException("Movie not found");
+    public MovieReadDto findById(Integer id) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Movie with id: " + id + " doesn't exist"));
+        return modelMapper.map(movie, MovieReadDto.class);
+
     }
 
+
+
     @Override
-    @Transactional
-    public void addReview(ReviewCreateDto reviewCreateDto, Integer id) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Movie not found"));
-        Review review = modelMapper.map(reviewCreateDto, Review.class);
+    public Movie create(MovieCreateEditDto movieCreateEditDto) {
+        Director director = directorRepository.findById(movieCreateEditDto.getDirectorId())
+                .orElseThrow(() -> new NotFoundException("Director not found"));
 
-        movie.addReview(review);
+        Movie movie = modelMapper.map(movieCreateEditDto, Movie.class);
+        movie.setDirector(director);
 
-        reviewRepository.save(review);
-        movieRepository.save(movie);
+      return movieRepository.save(movie);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.lidlpoisk.integration.service;
 
-import com.example.lidlpoisk.web.ControllerBaseTest;
+import com.example.lidlpoisk.integration.web.ControllerBaseTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 

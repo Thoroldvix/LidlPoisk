@@ -1,8 +1,10 @@
 package com.example.lidlpoisk.service;
 
-import com.example.lidlpoisk.model.dto.MovieReadDto;
-import com.example.lidlpoisk.model.dto.ReviewCreateDto;
-import com.example.lidlpoisk.model.entities.Review;
+import com.example.lidlpoisk.model.dto.actor.ActorCreateEditDto;
+import com.example.lidlpoisk.model.dto.movie.MovieCreateEditDto;
+import com.example.lidlpoisk.model.dto.movie.MovieReadDto;
+import com.example.lidlpoisk.model.dto.review.ReviewCreateEditDto;
+import com.example.lidlpoisk.model.entities.Movie;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +15,8 @@ public interface MovieService {
     void delete(Integer id);
 
 
-    Optional<MovieReadDto> findById(Integer id);
+    MovieReadDto findById(Integer id);
 
-    void addReview(ReviewCreateDto reviewCreateDto, Integer id);
+
+    Movie create(MovieCreateEditDto movieCreateEditDto);
 }

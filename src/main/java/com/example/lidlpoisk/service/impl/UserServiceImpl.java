@@ -1,7 +1,6 @@
 package com.example.lidlpoisk.service.impl;
 
-import com.example.lidlpoisk.model.dto.UserCreateDto;
-import com.example.lidlpoisk.model.dto.UserEditDto;
+import com.example.lidlpoisk.model.dto.user.UserCreateEditDto;
 import com.example.lidlpoisk.model.entities.User;
 import com.example.lidlpoisk.repository.UserRepository;
 import com.example.lidlpoisk.service.UserService;
@@ -27,12 +26,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(UserCreateDto userCreateDto) {
-        userRepository.save(modelMapper.map(userCreateDto, User.class));
+    public void create(UserCreateEditDto userCreateEditDto) {
+        userRepository.save(modelMapper.map(userCreateEditDto, User.class));
     }
 
     @Override
-    public boolean edit(Long id, UserEditDto userEditDto) {
+    public boolean edit(Long id, UserCreateEditDto userCreateEditDto) {
         return false;
     }
 

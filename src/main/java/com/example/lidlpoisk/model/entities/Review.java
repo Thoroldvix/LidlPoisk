@@ -1,17 +1,18 @@
 package com.example.lidlpoisk.model.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.Range;
 
 
 @Entity
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "movie")
 @NoArgsConstructor
 @Table(name = "review")
 public class Review {
@@ -24,7 +25,7 @@ public class Review {
     private String text;
 
     @Column(name = "rating")
-    @Size(min = 1, max = 10, message = "Rating must be between 1 and 10")
+    @Range(min = 1, max = 10, message = "Rating must be between 1 and 10")
     private Integer rating;
 
     @ManyToOne
