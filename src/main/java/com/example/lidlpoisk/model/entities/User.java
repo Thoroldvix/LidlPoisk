@@ -23,15 +23,12 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Email
+    @Email(message = "Email should be valid")
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Embedded
+    private PersonalInfo personalInfo;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)

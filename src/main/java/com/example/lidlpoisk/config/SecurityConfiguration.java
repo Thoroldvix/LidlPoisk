@@ -8,13 +8,19 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfiguration {
+public class SecurityConfiguration  {
+    private final JwtFilter jwtFilter;
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-       return http.authorizeHttpRequests()
+        return http.csrf().disable()
+                .authorizeHttpRequests()
                 .anyRequest().permitAll()
-               .and()
-               .build();
+                .and()
+                .build();
     }
+
+
 
 }

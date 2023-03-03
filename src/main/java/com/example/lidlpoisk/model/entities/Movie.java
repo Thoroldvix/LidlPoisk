@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "movie")
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +40,14 @@ public class Movie {
     private String poster;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "director_id")
     private Director director;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    public void addReview(Review review) {
+        review.setMovie(this);
+        reviews.add(review);
+    }
 }

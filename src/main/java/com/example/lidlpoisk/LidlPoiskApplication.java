@@ -15,11 +15,8 @@ public class LidlPoiskApplication {
 
     @Bean
     public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration()
-                .setFieldMatchingEnabled(true)
-                .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
-        return modelMapper;
+
+        return new ModelMapper();
     }
 
 }
